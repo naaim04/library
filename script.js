@@ -70,3 +70,14 @@ bookForm.addEventListener("submit", function (event) {
   bookDialog.close();  // Close the dialog
 });
 
+document.querySelector("#library-container").addEventListener("click", (e) => {
+  if (!e.target.classList.contains("remove-btn")) return;
+
+  const id = e.target.dataset.id;
+  const index = library.findIndex(book => book.id === id);
+
+  if (index !== -1) {
+    library.splice(index, 1);
+    displayLibrary();
+  }
+}); 

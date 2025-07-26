@@ -1,4 +1,4 @@
-const library = []
+let library = []
 
 function Book(title, author, pages, isRead) {
   this.id = crypto.randomUUID(); // Unique ID
@@ -70,14 +70,25 @@ bookForm.addEventListener("submit", function (event) {
   bookDialog.close();  // Close the dialog
 });
 
+
+
+Book.prototype.toggleRead = function () {
+  this.isRead = !this.isRead;
+};
+
 document.querySelector("#library-container").addEventListener("click", (e) => {
-  if (!e.target.classList.contains("remove-btn")) return;
-
   const id = e.target.dataset.id;
-  const index = library.findIndex(book => book.id === id);
 
-  if (index !== -1) {
-    library.splice(index, 1);
+  if (e.target.classList.contains("remove-btn")) {
+    library = library.filter(book => book.id !== id);
     displayLibrary();
   }
-}); 
+
+  if (e.target.classList.contains("toggle-btn")) {
+    const book = library.find(book => book.id === id);
+    if (book) {
+      book.toggleRead();       // Flip read status
+      displayLibrary();        // Re-render to show updated status
+    }
+  }
+});
